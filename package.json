@@ -1,0 +1,18 @@
+{
+  "name": "gravity-certs",
+  "version": "1.0.0",
+  "description": "Gravity Learning Center certificate verification & issuance",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "better-sqlite3": "^11.3.0",
+    "express-session": "^1.18.0",
+    "puppeteer": "^23.5.0",
+    "qrcode": "^1.5.4",
+    "cookie-parser": "^1.4.7"
+  }
+}

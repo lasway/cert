@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width">
+  <link rel="stylesheet" href="/globals.css">
+  <title>Credentials</title>
+  <style>
+    html { -webkit-print-color-adjust: exact; }
+    
+  .cert-card {
+    position: relative;
+    width: 700px;
+    height: 982px;
+    box-sizing: border-box;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1a1a1a;
+    overflow: hidden;
+  }
+  .cert-card > * { position: absolute; }
+
+  .cert-no {
+    top: 22px;
+    right: 36px;
+    font-size: 11px;
+    color: #111;
+    font-weight: 600;
+  }
+
+  .granted {
+    top: 188px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+  }
+
+  .body {
+    top: 285px;
+    left: 100px;
+    right: 100px;
+    text-align: center;
+  }
+  .body .label { font-size: 12px; color: #1a1a1a; }
+  .body .spacer { margin-top: 22px; }
+  .body .name { font-weight: bold; font-size: 22px; margin-top: 8px; letter-spacing: 1px; }
+  .body .id-number { font-weight: bold; font-size: 20px; margin-top: 8px; letter-spacing: 1px; }
+  .body .cert-type { font-weight: bold; font-size: 18px; margin-top: 8px; }
+  .body .sub-block { margin-top: 6px; }
+  .body .sub-line { font-size: 12px; color: #6a6a6a; margin-top: 2px; font-style: italic; }
+
+  .date-issue {
+    top: 622px;
+    left: 430px;
+    width: 160px;
+    text-align: center;
+  }
+  .date-reval {
+    top: 678px;
+    left: 430px;
+    width: 160px;
+    text-align: center;
+  }
+  .date-val {
+    font-size: 13px;
+    color: #1a1a1a;
+    font-weight: 600;
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+  }
+  .date-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #222;
+    margin-top: 1px;
+  }
+
+  .cert-qr {
+    top: 745px;
+    left: 470px;
+    width: 96px;
+    height: 96px;
+    background: #fff;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+
+  </style>
+</head>
+<body style="-webkit-print-color-adjust:exact;">
+  <div class="body-wrapper-padded">
+    <div class="cred-wrapper">
+      <div class="prettyvc-renderer">
+        
+<div class="cert-card" style="background-image:url('/cert-bg.jpg');">
+  <div class="cert-no">Certificate No: GT657568/26</div>
+
+  <div class="granted">Hereby granted to INFOAGE TECHNOLOGIES LTD</div>
+
+  <div class="body">
+    <div class="label">This is to certify that:</div>
+    <div class="name">RASHIDI JEURI</div>
+
+    <div class="label spacer">ID Number:</div>
+    <div class="id-number">T-6343-3321-116-1</div>
+
+    <div class="label spacer">Has been successfully assessed as a</div>
+    <div class="cert-type">Fall Arrest &amp; Basic Rescue Technician (Int)</div>
+    <div class="sub-block"><div class="sub-line">with Radio Frequency Awareness</div><div class="sub-line">with Gravity Vertical System User</div></div>
+  </div>
+
+  <div class="date-issue">
+    <div class="date-val">2023/11/28</div>
+    <div class="date-label">Date of Issue</div>
+  </div>
+
+  <div class="date-reval">
+    <div class="date-val">2026/11/28</div>
+    <div class="date-label">Revalidation Date</div>
+  </div>
+
+  <img class="cert-qr" src="data:image/png;base64,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" alt="Validate"/>
+</div>
+
+      </div>
+      <div class="dock-verified">
+        <img src="/check.svg" alt=""> Verified
+      </div>
+    </div>
+    <div class="cred-info-wrapper">
+      <h2>Issued By</h2>
+      <div class="cred-issuer-wrapper">
+        <div class="cred-issuer-logo">G</div>
+        <div>
+          <h4>Gravity Learning Center</h4>
+          <p title="did:dock:5H1gPBLG8EVKb1Sfsn12A3YQ6GR39N8HHqz...">did:dock:5H1gPBLG8EVKb1Sfsn12A3YQ6GR39N8HHqz...</p>
+        </div>
+      </div>
+      <h3>Actions</h3>
+      <div class="cred-actions">
+        <a href="/verify/9460b56e5ba196740ffe96e86f19c2b62b24f3a4e363d0d640a5fcc859f66b1e/pdf" class="submit-btn">Download PDF</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

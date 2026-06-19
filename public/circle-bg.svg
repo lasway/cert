@@ -1,0 +1,21 @@
+<svg width="480" height="428" viewBox="0 0 480 428" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_1147_30234" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="-52" width="480" height="480">
+<rect width="480" height="480" transform="translate(0 -52)" fill="url(#paint0_radial_1147_30234)"/>
+</mask>
+<g mask="url(#mask0_1147_30234)">
+<circle cx="240" cy="188" r="47.5" stroke="#E4E4E7"/>
+<circle cx="240" cy="188" r="79.5" stroke="#E4E4E7"/>
+<circle cx="240" cy="188" r="111.5" stroke="#E4E4E7"/>
+<circle cx="240" cy="188" r="143.5" stroke="#E4E4E7"/>
+<circle cx="240" cy="188" r="143.5" stroke="#E4E4E7"/>
+<circle cx="240" cy="188" r="175.5" stroke="#E4E4E7"/>
+<circle cx="240" cy="188" r="207.5" stroke="#E4E4E7"/>
+<circle cx="240" cy="188" r="239.5" stroke="#E4E4E7"/>
+</g>
+<defs>
+<radialGradient id="paint0_radial_1147_30234" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(240 -5.72205e-05) rotate(90) scale(480 250.529)">
+<stop/>
+<stop offset="0.953125" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>
