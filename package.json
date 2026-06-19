@@ -4,6 +4,7 @@
   "description": "Gravity Learning Center certificate verification & issuance",
   "main": "server.js",
   "scripts": {
+    "postinstall": "puppeteer browsers install chrome",
     "start": "node server.js",
     "dev": "node server.js"
   },
