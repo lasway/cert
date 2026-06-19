@@ -14,6 +14,8 @@ const PORT = process.env.PORT || 3000;
 const VERIFY_PASSWORD = 'Gravity';
 const CERT_QR_SIZE = 196;
 
+app.set('trust proxy', true);
+
 const CERT_BG_PATH = path.join(__dirname, 'public', 'cert-bg.jpg');
 const CERT_BG_DATA_URL = fs.existsSync(CERT_BG_PATH)
   ? 'data:image/jpeg;base64,' + fs.readFileSync(CERT_BG_PATH).toString('base64')
@@ -50,13 +52,25 @@ function credentialPathFor(certOrId) {
   return `/${encodeURIComponent(id)}`;
 }
 
-function verifyUrlFor(cert) {
-  const base = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
+function appBaseUrl(req) {
+  if (process.env.PUBLIC_URL) {
+    return process.env.PUBLIC_URL.replace(/\/+$/, '');
+  }
+  if (req) {
+    const proto = (req.get('x-forwarded-proto') || req.protocol || 'http').split(',')[0].trim();
+    const host = (req.get('x-forwarded-host') || req.get('host') || '').split(',')[0].trim();
+    if (host) return `${proto}://${host}`;
+  }
+  return `http://localhost:${PORT}`;
+}
+
+function verifyUrlFor(cert, req) {
+  const base = appBaseUrl(req);
   return `${base}${credentialPathFor(cert)}`;
 }
 
-async function buildCertHtmlForPdf(cert) {
-  const qrDataUrl = await QRCode.toDataURL(verifyUrlFor(cert), { margin: 0, width: CERT_QR_SIZE });
+async function buildCertHtmlForPdf(cert, req) {
+  const qrDataUrl = await QRCode.toDataURL(verifyUrlFor(cert, req), { margin: 0, width: CERT_QR_SIZE });
   const inner = renderCertificateHtml(cert, qrDataUrl, CERT_BG_DATA_URL);
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"/>
@@ -92,8 +106,8 @@ async function buildCertHtmlForPdf(cert) {
 </head><body>${inner}</body></html>`;
 }
 
-async function renderCertPdf(cert) {
-  const html = await buildCertHtmlForPdf(cert);
+async function renderCertPdf(cert, req) {
+  const html = await buildCertHtmlForPdf(cert, req);
   const browser = await getBrowser();
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'networkidle0' });
@@ -127,8 +141,8 @@ async function handleCredentialPage(req, res) {
   if (!unlocked) {
     return res.send(renderPasswordPage({ id }));
   }
-  const qrDataUrl = await QRCode.toDataURL(verifyUrlFor(cert), { margin: 0, width: CERT_QR_SIZE });
-  res.send(renderVerifyPage(cert, qrDataUrl));
+  const qrDataUrl = await QRCode.toDataURL(verifyUrlFor(cert, req), { margin: 0, width: CERT_QR_SIZE });
+  res.send(renderVerifyPage(cert, qrDataUrl, req));
 }
 
 function handleCredentialUnlock(req, res) {
@@ -207,7 +221,7 @@ app.get('/admin/certificates/:id/pdf', requireAdmin, async (req, res) => {
   const cert = db.getCertificate(req.params.id);
   if (!cert) return res.status(404).send('Not found');
   try {
-    const pdf = await renderCertPdf(cert);
+    const pdf = await renderCertPdf(cert, req);
     const safeName = cert.name.replace(/[^A-Z0-9]+/gi, '_');
     const suffix = cert.cert_type.includes('Rope Rigging') ? 'RR' : 'FABR';
     res.setHeader('Content-Type', 'application/pdf');
@@ -225,7 +239,7 @@ async function handleCredentialPdf(req, res) {
   const unlocked = req.session.unlockedCerts && req.session.unlockedCerts[req.params.id];
   if (!unlocked) return res.status(401).send('Unlock the certificate first');
   try {
-    const pdf = await renderCertPdf(cert);
+    const pdf = await renderCertPdf(cert, req);
     const safeName = cert.name.replace(/[^A-Z0-9]+/gi, '_');
     const suffix = cert.cert_type.includes('Rope Rigging') ? 'RR' : 'FABR';
     res.setHeader('Content-Type', 'application/pdf');
@@ -311,9 +325,9 @@ function renderPasswordPage({ id, error, notFound }) {
   return html;
 }
 
-function renderVerifyPage(cert, qrDataUrl) {
+function renderVerifyPage(cert, qrDataUrl, req) {
   const certHtml = renderCertificateHtml(cert, qrDataUrl);
-  const deeplink = `idwallet://?i_m=${Buffer.from(verifyUrlFor(cert)).toString('base64')}`;
+  const deeplink = `idwallet://?i_m=${Buffer.from(verifyUrlFor(cert, req)).toString('base64')}`;
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -402,7 +416,7 @@ function renderDashboard(certs, req) {
   const createdBanner = createdCert ? `
     <div class="ok">
       Certificate created. Verification URL:
-      <div style="margin-top:6px;"><code id="vurl">${req.protocol}://${req.get('host')}${credentialPathFor(createdCert)}</code>
+      <div style="margin-top:6px;"><code id="vurl">${verifyUrlFor(createdCert, req)}</code>
       <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:12px; margin-left:8px;" onclick="navigator.clipboard.writeText(document.getElementById('vurl').textContent)">Copy</button></div>
       <div style="margin-top:6px; font-size:12px;">Password: <code>${VERIFY_PASSWORD}</code></div>
     </div>` : '';
